@@ -41,23 +41,30 @@ namespace Atm_system
 
         private void button1_Click(object sender, EventArgs e)
         {
-            Con.Open();
-            SqlDataAdapter sda = new SqlDataAdapter("select count(*) from AccountTbl where AccNum='"+AccNumTb.Text+"' and PIN = "+PinTb.Text+"" , Con);
-            DataTable dt = new DataTable();
-            sda.Fill(dt);
-            if (dt.Rows[0][0].ToString() == "1")
+            if (AccNumTb.Text == "" || PinTb.Text == "")
             {
-               AccNumber = AccNumTb.Text;
-                HOME home = new HOME();
-                home.Show();
-                this.Hide();
-                Con.Close();
+                MessageBox.Show("Incorrect Account or Pin");
             }
             else
             {
-                MessageBox.Show("Wrong Account Number Or PIN Code");
+                Con.Open();
+                SqlDataAdapter sda = new SqlDataAdapter("select count(*) from AccountTbl where AccNum='" + AccNumTb.Text + "' and PIN = " + PinTb.Text + "", Con);
+                DataTable dt = new DataTable();
+                sda.Fill(dt);
+                if (dt.Rows[0][0].ToString() == "1")
+                {
+                    AccNumber = AccNumTb.Text;
+                    HOME home = new HOME();
+                    home.Show();
+                    this.Hide();
+                    Con.Close();
+                }
+                else
+                {
+                    MessageBox.Show("Wrong Account Number Or PIN Code");
+                }
+                Con.Close();
             }
-            Con.Close();
         }
 
         private void button3_Click(object sender, EventArgs e)
